@@ -13,6 +13,7 @@
 		19F56F9C25E821F80039158E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19F56F9A25E821F80039158E /* Main.storyboard */; };
 		19F56F9E25E821FB0039158E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19F56F9D25E821FB0039158E /* Assets.xcassets */; };
 		19F56FA125E821FB0039158E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19F56F9F25E821FB0039158E /* LaunchScreen.storyboard */; };
+		19F56FAA25E82F010039158E /* StoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F56FA925E82F010039158E /* StoryTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		19F56F9D25E821FB0039158E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		19F56FA025E821FB0039158E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		19F56FA225E821FB0039158E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19F56FA925E82F010039158E /* StoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				19F56F9D25E821FB0039158E /* Assets.xcassets */,
 				19F56F9F25E821FB0039158E /* LaunchScreen.storyboard */,
 				19F56FA225E821FB0039158E /* Info.plist */,
+				19F56FA925E82F010039158E /* StoryTableViewCell.swift */,
 			);
 			path = "Vegan russia search";
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 				19F56F9925E821F80039158E /* ViewController.swift in Sources */,
 				19F56F9525E821F80039158E /* AppDelegate.swift in Sources */,
 				19F56F9725E821F80039158E /* SceneDelegate.swift in Sources */,
+				19F56FAA25E82F010039158E /* StoryTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

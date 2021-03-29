@@ -13,6 +13,8 @@ class StoryTableViewCell: UITableViewCell {
     
     private let _image: UIImageView = {
         let image = UIImageView()
+        image.layer.cornerRadius = 8
+        image.layer.masksToBounds = true
         return image
     }()
 
@@ -29,7 +31,7 @@ class StoryTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.backgroundColor = .green
+        contentView.backgroundColor = .systemBackground
         contentView.addSubview(_image)
         
     }
@@ -41,34 +43,27 @@ class StoryTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        _image.frame = CGRect(x: contentView.center.x-150, y: contentView.center.y-150, width: 300, height: 300)
+        _image.frame = CGRect(x: contentView.center.x - contentView.frame.size.width * 0.4, y: contentView.center.y - contentView.frame.size.height * 0.4, width: contentView.frame.size.width * 0.8, height: contentView.frame.size.height * 0.8)
     }
     
-    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
-    func loadImage(_ url: URL) {
-        getData(from: url) { (data, response, error) in
-            guard let data = data, error == nil else {
-                DispatchQueue.main.async { [weak self] in
-                    self?._image.image = UIImage(named: "AppStoreIcon")
-                }
-                return
-            }
-            
-            DispatchQueue.main.async { [weak self] in
-                self?._image.image = UIImage(data: data)
-            }
-        }
-    }
     
     func configure (with hit: Hit) {
         let imageUrl = URL(string: "https://veganrussian.ru\(hit.feature_image)")
         guard let url = imageUrl else {
             return
         }
-        loadImage(url)
+
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                self?._image.image = image
+            }
+        }
+        task.resume()
     }
     
 }

@@ -9,43 +9,64 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     private var stories: [Hit] = []
         
     private let tableView: UITableView = {
        let tableView = UITableView()
         tableView.register(StoryTableViewCell.self, forCellReuseIdentifier: StoryTableViewCell.identifier)
+        tableView.separatorStyle = .none
         
         return tableView
+    }()
+    
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.layer.borderWidth = 0
+        
+        return searchBar
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
         
         view.addSubview(tableView)
+        view.addSubview(searchBar)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        searchRequest()
     }
 
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        tableView.frame = view.bounds
+        searchBar.frame = CGRect(x: 10, y: view.safeAreaInsets.top, width: view.frame.size.width - 20, height: 50)
+        tableView.frame = CGRect(x: 0, y: view.safeAreaInsets.top + 55, width: view.frame.size.width, height: view.frame.size.height - 55)
+        
+//        searchBar.frame = CGRect(x: (view.bounds.width / 2) - (view.bounds.width * 0.9 / 2), y: 80, width: view.bounds.width * 0.9, height: 40)
+//        tableView.frame = CGRect(x: 0, y: searchBar.frame.maxY, width: view.bounds.width, height: view.bounds.height)
     }
     
-    func searchRequest () {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        if let text = searchBar.text {
+            stories = []
+            tableView.reloadData()
+            searchRequest(query: text)
+        }
+    }
+    
+    func searchRequest (query: String) {
         let url = URL(string: "https://veganrussian.ru/api/search/")!
         var request = URLRequest(url: url);
         request.httpMethod = "POST"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        let json = try? JSONSerialization.data(withJSONObject: ["query": "oreo", "offset": 0], options: .fragmentsAllowed)
+        let json = try? JSONSerialization.data(withJSONObject: ["query": query, "offset": 0], options: .fragmentsAllowed)
         request.httpBody = json
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -54,13 +75,15 @@ class ViewController: UIViewController {
                 return
             }
             
-            let responseJson = try? JSONDecoder().decode(SearchResponse.self, from: data)
-            if let response = responseJson {
-                self.stories = response.hits
+            do {
+                let response = try JSONDecoder().decode(SearchResponse.self, from: data)
+                DispatchQueue.main.async {
+                    self.stories = response.hits
+                    self.tableView.reloadData()
+                }
             }
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            catch {
+                print(error)
             }
         }
         
@@ -69,7 +92,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource  {
+extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: StoryTableViewCell.identifier, for: indexPath) as! StoryTableViewCell
         cell.configure(with: stories[indexPath.row])

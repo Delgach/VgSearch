@@ -14,20 +14,20 @@ class ViewController: UIViewController {
     private let tableView: UITableView = {
        let tableView = UITableView()
         tableView.register(StoryTableViewCell.self, forCellReuseIdentifier: StoryTableViewCell.identifier)
-        tableView.separatorStyle = .none
         
         return tableView
     }()
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.layer.borderWidth = 0
+        searchBar.backgroundImage = UIImage()
         
         return searchBar
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
@@ -47,9 +47,6 @@ class ViewController: UIViewController {
         
         searchBar.frame = CGRect(x: 10, y: view.safeAreaInsets.top, width: view.frame.size.width - 20, height: 50)
         tableView.frame = CGRect(x: 0, y: view.safeAreaInsets.top + 55, width: view.frame.size.width, height: view.frame.size.height - 55)
-        
-//        searchBar.frame = CGRect(x: (view.bounds.width / 2) - (view.bounds.width * 0.9 / 2), y: 80, width: view.bounds.width * 0.9, height: 40)
-//        tableView.frame = CGRect(x: 0, y: searchBar.frame.maxY, width: view.bounds.width, height: view.bounds.height)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

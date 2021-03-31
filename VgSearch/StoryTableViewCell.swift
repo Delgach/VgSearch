@@ -47,23 +47,10 @@ class StoryTableViewCell: UITableViewCell {
     }
     
     
-    func configure (with hit: Hit) {
-        let imageUrl = URL(string: "https://veganrussian.ru\(hit.feature_image)")
-        guard let url = imageUrl else {
-            return
+    func configure (with url: String, imageCache: ImageCache) {
+        imageCache.getImage(relativeUrl: url) {[weak self] image in
+            self?._image.image = image
         }
-
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            
-            DispatchQueue.main.async {
-                let image = UIImage(data: data)
-                self?._image.image = image
-            }
-        }
-        task.resume()
     }
     
 }

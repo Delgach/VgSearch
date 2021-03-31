@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     private var stories: [Hit] = []
+    private let imageCache = ImageCache()
         
     private let tableView: UITableView = {
        let tableView = UITableView()
@@ -45,8 +46,8 @@ class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        searchBar.frame = CGRect(x: 10, y: view.safeAreaInsets.top, width: view.frame.size.width - 20, height: 50)
-        tableView.frame = CGRect(x: 0, y: view.safeAreaInsets.top + 55, width: view.frame.size.width, height: view.frame.size.height - 55)
+        searchBar.frame = CGRect(x: 10, y: view.safeAreaInsets.top + 50, width: view.frame.size.width - 20, height: 50)
+        tableView.frame = CGRect(x: 0, y: view.safeAreaInsets.top + 105, width: view.frame.size.width, height: view.frame.size.height - 55)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -92,7 +93,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: StoryTableViewCell.identifier, for: indexPath) as! StoryTableViewCell
-        cell.configure(with: stories[indexPath.row])
+        cell.configure(with: stories[indexPath.row].feature_image, imageCache: imageCache)
         
         return cell
     }

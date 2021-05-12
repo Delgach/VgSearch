@@ -16,7 +16,17 @@ class ImageCache {
         if let cache = imageCache.object(forKey: relativeUrl as NSString) {
             completion(cache)
         } else {
-            let imageUrl = URL(string: "https://veganrussian.ru\(relativeUrl)")
+            if let tempImage = UIImage(named: "emptyVgStory") {
+                completion(tempImage)
+            }
+            var imageUrl: URL?
+            
+            if relativeUrl.contains("https://veganrussian.ru") {
+                imageUrl = URL(string: relativeUrl)
+            } else {
+                imageUrl = URL(string: "https://veganrussian.ru\(relativeUrl)")
+            }
+            
             guard let url = imageUrl else {
                 return
             }

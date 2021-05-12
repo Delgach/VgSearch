@@ -28,6 +28,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        overrideUserInterfaceStyle = .light
+        
+        tableView.allowsSelection = false
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
@@ -93,7 +96,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: StoryTableViewCell.identifier, for: indexPath) as! StoryTableViewCell
-        cell.configure(with: stories[indexPath.row].feature_image, imageCache: imageCache)
+        cell.configure(with: stories[indexPath.row], imageCache: imageCache)
         
         return cell
     }
@@ -103,7 +106,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, UISearchBa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 400
+        return view.frame.size.height * 0.5
     }
 }
 
